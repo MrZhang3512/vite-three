@@ -1,5 +1,4 @@
 import * as THREE from 'three'
-import * as dat from 'dat.gui';
 
 let width: number = 0, height: number = 0;
 let renderer: THREE.WebGLRenderer;
@@ -15,12 +14,7 @@ const initThree = (): void => {
   document.getElementById('canvas-frame')?.appendChild(renderer.domElement);
   renderer.setClearColor(0xFFFFFF, 1);
 }
-let params = {
-  repeat: 1,
-  wrap: 1,
-  offsetX: 0,
-  offsetY: 0,
-} 
+
 let camera: THREE.PerspectiveCamera;
 const initCamera = () => {
   camera = new THREE.PerspectiveCamera(60, width / height, 1, 10000);
@@ -37,31 +31,40 @@ let scene: THREE.Scene;
 const initScene = () => {
   scene = new THREE.Scene();
 }
-let light: THREE.PointLight;
+let light: THREE.AmbientLight;
 const initLight = () => {
-  light = new THREE.PointLight(0x0000ff, 1, 100);
+  light = new THREE.AmbientLight(0x404040); // 白光 0x404040
   scene.add(light);
 }
 // 创建物体
 let cube: THREE.Mesh
-let texture: THREE.Texture;
 let material: THREE.MeshBasicMaterial;
 const initObject = () => {
-  const geometry = new THREE.BoxGeometry(8, 5, 5);;
-  // 加载纹理
-  const load = new THREE.TextureLoader().load(
-    '../../assets/img/img1.jpg',
-    (text) => {
-      // 图片加载完成
-      texture = text
-      material = new THREE.MeshBasicMaterial( { map: texture} );
-      cube = new THREE.Mesh( geometry, material );
-      cube.rotateX(0.5)
-      cube.rotateY(0.5)
-      cube.position.x = 1
-      scene.add(cube);
-    }
-  )
+  // 平面几何缓冲体
+  const geometry = new THREE.PlaneGeometry(10, 10, 2, 2);
+  material = new THREE.MeshBasicMaterial({
+    vertexColors: true,
+     // 将几何体渲染为线框
+    wireframe: true, 
+    // color: 0xff0000
+  })
+  const color = new Float32Array([
+    1.0, 0.0, 1.0,
+    0.0, 1.0, 0.0,
+    0.0, 0.0, 0.0,
+    1.0, 0.0, 0.0,
+    // PlaneGeometry设置分段为2 就有9个点,
+    1.0, 0.0, 1.0,
+    0.0, 1.0, 0.0,
+    0.0, 0.0, 0.0,
+    1.0, 0.0, 0.0,
+    1.0, 0.0, 0.0,
+  ])
+  geometry.setAttribute('color', new THREE.BufferAttribute(color, 3))
+  cube = new THREE.Mesh(geometry, material)
+  console.log(geometry)
+  // 由geometry中的index来设置面，逆时针
+  scene.add(cube)
 }
 
 // 初始化辅助线
@@ -74,36 +77,11 @@ const initHelper = () => {
 
 // 循环渲染
 const animation = () => {
-  // 纹理重复
-  if (texture) {
-    texture.repeat.x = params.repeat
-    texture.repeat.y = params.repeat
-    texture.offset.x = params.offsetX
-    texture.offset.y = params.offsetY
-    texture.wrapS = params.wrap
-    texture.wrapT = params.wrap
-    // 纹理的回环
-    // 简单重复
-    // THREE.RepeatWrapping = 1000
-    // 边缘拉伸
-    // THREE.ClampToEdgeWrapping = 1001
-    // 镜像重复
-    // THREE.MirroredRepeatWrapping = 1002
-
-    // 纹理的属性改变后需要更新 wrap改变需要设置
-    texture.needsUpdate = true;
-  }
   renderer.clear();
   renderer.render(scene, camera);
   requestAnimationFrame(animation)
 }
-const creatUI = () => {
-  const gui = new dat.GUI();
-  gui.add(params, 'repeat', 1, 10).name('纹理的重复')
-  gui.add(params, 'wrap', 1000, 1002).name('回环').step(1)
-  gui.add(params, 'offsetX', -300, 300).name('X轴的偏移量')
-  gui.add(params, 'offsetY', 0, 1).name('Y轴的偏移量')
-}
+
 const initModel = (): void => {
   initThree();
   initCamera();
@@ -112,6 +90,5 @@ const initModel = (): void => {
   initHelper()
   initObject();
   animation();
-  creatUI()
 }
 export default initModel

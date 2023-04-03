@@ -12,7 +12,27 @@
       "virtual": false
     },
     {
-      "id": "/Users/zxdz/Documents/webgl/vite-three/exapmle/list/3.物体移动.ts",
+      "id": "/Users/zxdz/Documents/webgl/vite-three/exapmle/list/5.光.ts",
+      "deps": [],
+      "plugins": [
+        "__load__",
+        "vite:esbuild",
+        "vite:import-analysis"
+      ],
+      "virtual": false
+    },
+    {
+      "id": "/Users/zxdz/Documents/webgl/vite-three/exapmle/list/7.纹理.ts",
+      "deps": [],
+      "plugins": [
+        "__load__",
+        "vite:esbuild",
+        "vite:import-analysis"
+      ],
+      "virtual": false
+    },
+    {
+      "id": "/Users/zxdz/Documents/webgl/vite-three/exapmle/list/8.绘制一个三角形.ts",
       "deps": [],
       "plugins": [
         "__load__",
@@ -26,6 +46,70 @@
       "deps": [],
       "plugins": [
         "__load__",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
+        "vite:css",
+        "vite:css-post",
         "vite:css",
         "vite:css-post"
       ],
@@ -42,7 +126,7 @@
       "virtual": false
     },
     {
-      "id": "/Users/zxdz/Documents/webgl/vite-three/node_modules/.vite/deps/chunk-RSJERJUL.js?v=7025fc9d",
+      "id": "/Users/zxdz/Documents/webgl/vite-three/node_modules/.vite/deps/dat__gui.js?v=3b3409e0",
       "deps": [],
       "plugins": [
         "vite:optimized-deps",
@@ -51,25 +135,7 @@
       "virtual": true
     },
     {
-      "id": "/Users/zxdz/Documents/webgl/vite-three/node_modules/.vite/deps/stats__js.js?v=7025fc9d",
-      "deps": [],
-      "plugins": [
-        "vite:optimized-deps",
-        "vite:import-analysis"
-      ],
-      "virtual": true
-    },
-    {
-      "id": "/Users/zxdz/Documents/webgl/vite-three/node_modules/.vite/deps/stats__js.js?v=eed2388c",
-      "deps": [],
-      "plugins": [
-        "vite:optimized-deps",
-        "vite:import-analysis"
-      ],
-      "virtual": true
-    },
-    {
-      "id": "/Users/zxdz/Documents/webgl/vite-three/node_modules/.vite/deps/three.js?v=7025fc9d",
+      "id": "/Users/zxdz/Documents/webgl/vite-three/node_modules/.vite/deps/three.js?v=75c0323d",
       "deps": [],
       "plugins": [
         "vite:optimized-deps",
@@ -93,16 +159,6 @@
       "plugins": [
         "__load__",
         "vite:client-inject",
-        "vite:import-analysis"
-      ],
-      "virtual": false
-    },
-    {
-      "id": "/Users/zxdz/Documents/webgl/vite-three/utils/stats.ts",
-      "deps": [],
-      "plugins": [
-        "__load__",
-        "vite:esbuild",
         "vite:import-analysis"
       ],
       "virtual": false
