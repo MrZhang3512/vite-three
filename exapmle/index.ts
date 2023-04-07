@@ -6,8 +6,9 @@
 // import example from './list/6.点光源';
 // import example from './list/7.纹理';
 // import example from './list/8.绘制一个三角形';
-import example from './list/9.绘制一个三角形2';
-
+// import example from './list/9.绘制一个三角形2';
+// import example from './list/10.渲染一个模型'
+import example from './list/11.高效的渲染一个几何体'
 
 const initModel = example;
 export default initModel

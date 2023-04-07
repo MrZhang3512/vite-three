@@ -20,9 +20,12 @@ export default defineConfig({
   ],
   resolve: {
     // 路径别名
-    // alias: {
-    //   "@": resolve(__dirname, 'src'), 
-    // },
+    alias: {
+      "@example": resolve(__dirname, 'example'), 
+      "@loader": resolve(__dirname, './loader'), 
+      "@assets": resolve(__dirname, './assets'), 
+      "@utils": resolve(__dirname, 'utils'), 
+    },
     // 使用路径别名时想要省略的后缀名，可以自己 增减
     extensions: ['.js', '.json', '.ts'] 
   },
