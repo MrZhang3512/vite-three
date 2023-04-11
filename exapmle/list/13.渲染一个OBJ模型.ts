@@ -1,7 +1,6 @@
 import * as THREE from 'three'
 
-import { OBJLoader } from "three/examples/jsm/loaders/ObJLoader"
-
+import { loaderPromise, loaderTexture } from '../../utils/common'
 let width: number = 0, height: number = 0;
 let renderer: THREE.WebGLRenderer;
 const initThree = (): void => {
@@ -18,10 +17,10 @@ const initThree = (): void => {
 
 let camera: THREE.PerspectiveCamera;
 const initCamera = () => {
-  camera = new THREE.PerspectiveCamera(60, width / height, 1, 10000);
+  camera = new THREE.PerspectiveCamera(10, width / height, 1, 10000);
   camera.position.x = 0;
   camera.position.y = 0;
-  camera.position.z = 30;
+  camera.position.z = 1.5;
   camera.up.x = 0;
   camera.up.y = 1;
   camera.up.z = 0;
@@ -36,30 +35,32 @@ let light: THREE.DirectionalLight;
 const initLight = () => {
   // light = new THREE.AmbientLight(0xffff00); // 白光 0x404040
   light = new THREE.DirectionalLight(0x404040, 1);
-  light.position.set(50, 50, 50)
+  light.position.set(550, 550, 550)
   scene.add(light);
   // 模拟相机发出的光
   // camera.add(light)
 }
 // 创建物体
-let material: THREE.MeshLambertMaterial;
-let mesh: any;
-const initObject = () => {
-  const load = new OBJLoader().load(
-    '../../assets/model/myobj.obj',
-    (text: any) => {
-      mesh = text;
-      console.log(mesh)
-      // // side 单边绘制（前面和后面） 双边绘制
-      // material = new THREE.MeshLambertMaterial({ color: '#EEE7E7', side: THREE.BackSide})
-      // // 该文件返回的是一个mesh组 需要更改他的材质
-      // for (let i in mesh.children) {
-      //   // mesh.children[i].material.side = THREE.DoubleSide;
-      //   mesh.children[i].material = material;
-      // }
-      scene.add(mesh)
-    }
-  )
+let mesh: any, texture;
+const initObject = async() => {
+  // 加载obj模型
+  mesh = await loaderPromise('OBJLoader', '../../assets/model/carved_wooden_elephant_4k.obj')
+  console.log(mesh)
+  // 该文件返回的是一个mesh组 需要更改他的材质 mesh.traverse 遍历
+  // for (let i in mesh.children) {
+  //   mesh.children[i].material.side = THREE.FrontSide;
+  // }
+  texture = await loaderTexture('../../assets/img/img1.jpg')
+  // texture.wrapS = THREE.RepeatWrapping
+  // texture.wrapS = THREE.RepeatWrapping
+  // texture.repeat.x = 10
+  // texture.repeat.y = 10
+  // texture.needsUpdate = true;
+  console.log('texture', texture)
+  for (let i in mesh.children) {
+    mesh.children[i].material = new THREE.MeshBasicMaterial( { map: texture as THREE.Texture} );
+  }
+  scene.add(mesh);
 }
 
 // 初始化辅助线
@@ -68,8 +69,6 @@ const initHelper = () => {
   const axesHelper = new THREE.AxesHelper( 1000 );
   scene.add( axesHelper );
 }
-
-
 // 循环渲染
 const animation = () => {
   mesh && (mesh.rotation.y += 0.01)

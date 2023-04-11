@@ -5,96 +5,102 @@
       "id": "/Users/zxdz/Documents/webgl/vite-three/exapmle/index.ts",
       "deps": [],
       "plugins": [
-        "__load__",
-        "vite:esbuild",
-        "vite:import-analysis"
+        "vite:load-fallback",
+        "vite:esbuild"
       ],
       "virtual": false
     },
     {
-      "id": "/Users/zxdz/Documents/webgl/vite-three/exapmle/list/10.渲染一个模型.ts",
+      "id": "/Users/zxdz/Documents/webgl/vite-three/exapmle/list/13.渲染一个OBJ模型.ts",
       "deps": [],
       "plugins": [
-        "__load__",
-        "vite:esbuild",
-        "vite:import-analysis"
+        "vite:load-fallback",
+        "vite:esbuild"
       ],
       "virtual": false
     },
     {
-      "id": "/Users/zxdz/Documents/webgl/vite-three/index.html?html-proxy&direct&index=0.css",
+      "id": "/Users/zxdz/Documents/webgl/vite-three/index.html",
       "deps": [],
       "plugins": [
-        "__load__",
-        "vite:css",
-        "vite:css-post",
-        "vite:css",
-        "vite:css-post",
-        "vite:css",
-        "vite:css-post",
-        "vite:css",
-        "vite:css-post",
-        "vite:css",
-        "vite:css-post",
+        "vite:load-fallback",
+        "vite:build-html"
+      ],
+      "virtual": false
+    },
+    {
+      "id": "/Users/zxdz/Documents/webgl/vite-three/index.html?html-proxy&inline-css&index=0.css",
+      "deps": [],
+      "plugins": [
+        "vite:html-inline-proxy",
         "vite:css",
         "vite:css-post"
       ],
-      "virtual": false
+      "virtual": true
     },
     {
       "id": "/Users/zxdz/Documents/webgl/vite-three/index.ts",
       "deps": [],
       "plugins": [
-        "__load__",
-        "vite:esbuild",
-        "vite:import-analysis"
+        "vite:load-fallback",
+        "vite:esbuild"
       ],
       "virtual": false
     },
     {
-      "id": "/Users/zxdz/Documents/webgl/vite-three/node_modules/.vite/deps/chunk-UMN7JHZN.js?v=05379d36",
+      "id": "/Users/zxdz/Documents/webgl/vite-three/node_modules/three/build/three.module.js",
       "deps": [],
       "plugins": [
-        "vite:optimized-deps",
-        "vite:import-analysis"
-      ],
-      "virtual": true
-    },
-    {
-      "id": "/Users/zxdz/Documents/webgl/vite-three/node_modules/.vite/deps/three.js?v=05379d36",
-      "deps": [],
-      "plugins": [
-        "vite:optimized-deps",
-        "vite:import-analysis"
-      ],
-      "virtual": true
-    },
-    {
-      "id": "/Users/zxdz/Documents/webgl/vite-three/node_modules/.vite/deps/three_examples_jsm_loaders_FBXLoader.js?v=05379d36",
-      "deps": [],
-      "plugins": [
-        "vite:optimized-deps",
-        "vite:import-analysis"
-      ],
-      "virtual": true
-    },
-    {
-      "id": "/Users/zxdz/Documents/webgl/vite-three/node_modules/vite/dist/client/client.mjs",
-      "deps": [],
-      "plugins": [
-        "__load__",
-        "vite:client-inject",
-        "vite:import-analysis"
+        "vite:load-fallback"
       ],
       "virtual": false
     },
     {
-      "id": "/Users/zxdz/Documents/webgl/vite-three/node_modules/vite/dist/client/env.mjs",
+      "id": "/Users/zxdz/Documents/webgl/vite-three/node_modules/three/examples/jsm/curves/NURBSCurve.js",
       "deps": [],
       "plugins": [
-        "__load__",
-        "vite:client-inject",
-        "vite:import-analysis"
+        "vite:load-fallback"
+      ],
+      "virtual": false
+    },
+    {
+      "id": "/Users/zxdz/Documents/webgl/vite-three/node_modules/three/examples/jsm/curves/NURBSUtils.js",
+      "deps": [],
+      "plugins": [
+        "vite:load-fallback"
+      ],
+      "virtual": false
+    },
+    {
+      "id": "/Users/zxdz/Documents/webgl/vite-three/node_modules/three/examples/jsm/libs/fflate.module.js",
+      "deps": [],
+      "plugins": [
+        "vite:load-fallback"
+      ],
+      "virtual": false
+    },
+    {
+      "id": "/Users/zxdz/Documents/webgl/vite-three/node_modules/three/examples/jsm/loaders/FBXLoader.js",
+      "deps": [],
+      "plugins": [
+        "vite:load-fallback"
+      ],
+      "virtual": false
+    },
+    {
+      "id": "/Users/zxdz/Documents/webgl/vite-three/node_modules/three/examples/jsm/loaders/ObJLoader.js",
+      "deps": [],
+      "plugins": [
+        "vite:load-fallback"
+      ],
+      "virtual": false
+    },
+    {
+      "id": "/Users/zxdz/Documents/webgl/vite-three/utils/common.ts",
+      "deps": [],
+      "plugins": [
+        "vite:load-fallback",
+        "vite:esbuild"
       ],
       "virtual": false
     }

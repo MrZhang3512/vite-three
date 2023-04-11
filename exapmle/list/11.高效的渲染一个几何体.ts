@@ -1,7 +1,5 @@
 import * as THREE from 'three'
 
-import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader"
-
 let width: number = 0, height: number = 0;
 let renderer: THREE.WebGLRenderer;
 const initThree = (): void => {
@@ -158,7 +156,7 @@ const initObject = () => {
   geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
   geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
   geometry.setAttribute('normal', new THREE.BufferAttribute(normals, 3));
-  // 计算当前几何体的的边界球形，不会影响渲染效果
+  // 计算当前几何体的的边界球形，不会影响渲染效果，计算一次 之后可以用来检测碰撞
   geometry.computeBoundingSphere();
 
   console.log('geometry', geometry)

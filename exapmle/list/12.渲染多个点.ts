@@ -1,7 +1,5 @@
 import * as THREE from 'three'
 
-import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader"
-
 let width: number = 0, height: number = 0;
 let renderer: THREE.WebGLRenderer;
 const initThree = (): void => {
@@ -42,50 +40,47 @@ const initLight = () => {
   // camera.add(light)
 }
 // 创建物体
-let material: THREE.MeshLambertMaterial;
 let mesh: any;
 const initObject = () => {
-  let triangle = 160000;
+  let points = 999000;
   let geometry = new THREE.BufferGeometry();
 
-  let positions = new Float32Array(triangle * 3 * 3);
-  // 每个顶点一个法线 也可以一个面一个法线
-  let normals = new Float32Array(triangle * 3 * 3)
-  // 每个顶点一个颜色
-  let colors = new Float32Array(triangle * 3 * 3)
-
-  let color = new THREE.Color()
+  let positions = new Float32Array(points * 3);
+  let colors = new Float32Array(points * 3);
+  
   // 正方形大小
   let n = 1000, n2 = n / 2;
   // 三角形大小
   let d = 12 , d2 = d / 2;
 
-  let pA = new THREE.Vector3();
-  let pB = new THREE.Vector3();
-  let pC = new THREE.Vector3();
 
-  let cb = new THREE.Vector3();
-  let ab = new THREE.Vector3();
+  for (let i = 0; i < points; i+=3) {
+    let x = Math.random() * n - n2;
+    let y = Math.random() * n - n2;
+    let z = Math.random() * n - n2;
+    positions[i] = x
+    positions[i + 1] = y
+    positions[i + 2] = z
 
- 
-  // geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-  // geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-  // geometry.setAttribute('normal', new THREE.BufferAttribute(normals, 3));
-  // // 计算当前几何体的的边界球形
-  // geometry.computeBoundingSphere();
-  // console.log('geometry', geometry)
-  // let material = new THREE.MeshPhongMaterial({
-  //   // color: 0xaaaaaa,
-  //   // 材质的高光颜色。默认值为0x111111（深灰色）的颜色Color
-  //   specular: 0xffffff,
-  //   // 高亮的程度，越高的值越闪亮。默认值为 30。
-  //   shininess: 250,
-  //   side: THREE.DoubleSide,
-  //   // 是否使用顶点着色
-  //   vertexColors: true,
-  // });
-  // mesh = new THREE.Mesh(geometry, material);
-  // scene.add(mesh);
+    let cx = (x / n) + 0.5
+    let cy = (y / n) + 0.5
+    let cz = (z / n) + 0.5
+    colors[i] = cx
+    colors[i + 1] = cy
+    colors[i + 2] = cz
+  }
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+  geometry.computeBoundingSphere();
+  console.log('geometry', geometry)
+  let material = new THREE.PointsMaterial({
+    // 是否使用顶点着色
+    vertexColors: true,
+    // 点大小
+    size: 1,
+  });
+  mesh = new THREE.Points(geometry, material);
+  scene.add(mesh);
 }
 
 // 初始化辅助线
@@ -103,7 +98,12 @@ const animation = () => {
   renderer.render(scene, camera);
   requestAnimationFrame(animation)
 }
-
+// 监听窗口变化 
+const onWindowResize = () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight)
+}
 const initModel = (): void => {
   initThree();
   initCamera();
@@ -112,5 +112,6 @@ const initModel = (): void => {
   initHelper()
   initObject();
   animation();
+  window.addEventListener('resize', onWindowResize)
 }
 export default initModel
