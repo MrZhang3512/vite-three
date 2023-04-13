@@ -1,6 +1,5 @@
 import * as THREE from 'three'
 
-import { loaderPromise, loaderTexture } from '../../utils/common'
 let width: number = 0, height: number = 0;
 let renderer: THREE.WebGLRenderer;
 const initThree = (): void => {
@@ -17,10 +16,10 @@ const initThree = (): void => {
 
 let camera: THREE.PerspectiveCamera;
 const initCamera = () => {
-  camera = new THREE.PerspectiveCamera(10, width / height, 1, 10000);
+  camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
   camera.position.x = 0;
   camera.position.y = 0;
-  camera.position.z = 300;
+  camera.position.z = 30;
   camera.up.x = 0;
   camera.up.y = 1;
   camera.up.z = 0;
@@ -31,55 +30,31 @@ let scene: THREE.Scene;
 const initScene = () => {
   scene = new THREE.Scene();
 }
-let light: THREE.DirectionalLight;
+let light: THREE.AmbientLight;
 const initLight = () => {
-  // light = new THREE.AmbientLight(0xffff00); // 白光 0x404040
-  light = new THREE.DirectionalLight(0x404040, 1);
-  light.position.set(550, 550, 550)
+  light = new THREE.AmbientLight(0xffff00); // 白光 0x404040
+  // light = new THREE.DirectionalLight(0x404040, 1);
+  // light.position.set(550, 550, 550)
   scene.add(light);
   // 模拟相机发出的光
   // camera.add(light)
 }
 // 创建物体
-let mesh: any, texture1: THREE.Texture, texture2: THREE.Texture;
 const initObject = async() => {
-  // 加载fbx模型
-  mesh = await loaderPromise('FBXLoader', '../../assets/model/bear.fbx')
-  console.log(mesh)
-  // 该文件返回的是一个mesh组 需要更改他的材质 mesh.traverse 遍历
-  // for (let i in mesh.children) {
-  //   mesh.children[i].material.side = THREE.FrontSide;
-  // }
-  texture1 = await loaderTexture('../../assets/img/img1.jpg') as THREE.Texture
-  texture2 = await loaderTexture('../../assets/img/WechatIMG125.jpeg') as THREE.Texture
-  // texture.wrapS = THREE.RepeatWrapping
-  // texture.wrapS = THREE.RepeatWrapping
-  // texture.repeat.x = 10
-  // texture.repeat.y = 10
-  // texture.needsUpdate = true;
-  console.log('texture', texture1, texture2)
-  mesh.traverse((child: any) => {
-    let i = 0;
-    if (child instanceof THREE.Mesh) {
-      if (i % 2 === 0) {
-          mesh.children[i].material = new THREE.MeshBasicMaterial( { map: texture2 } )
-        } else {
-          mesh.children[i].material = new THREE.MeshBasicMaterial( { map: texture1 } )
-        }
-        i++;
-    }
-  })
+  const cubes = 100;
+  for (let i = 0; i < cubes; i++) {
+    const gemotry = new THREE.BoxGeometry(Math.random() * 2, Math.random() * 2, Math.random() * 2)
+    const material = new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff})
+    const mesh = new THREE.Mesh(gemotry, material);
+    mesh.position.x = Math.random() * 20 - 10;
+    mesh.position.y = Math.random() * 20 - 10;
+    mesh.position.z = Math.random() * 20 - 10;
 
-  // for (let i in mesh.children) {
-  //   if (+i % 2 === 0) {
-  //     mesh.children[i].material.map = texture1
-  //     console.log(mesh.children[i])
-  //   } else {
-  //     mesh.children[i].material.map = texture2
-  //   }
-    
-  // }
-  scene.add(mesh);
+    mesh.rotation.x = Math.random() * Math.PI * 2;
+    mesh.rotation.y = Math.random() * Math.PI * 2;
+    mesh.rotation.z = Math.random() * Math.PI * 2;
+    scene.add(mesh);
+  }
 }
 
 // 初始化辅助线
@@ -88,9 +63,56 @@ const initHelper = () => {
   const axesHelper = new THREE.AxesHelper( 1000 );
   scene.add( axesHelper );
 }
+let raycaster: THREE.Raycaster;
+let pointer: THREE.Vector2;
+const initRaycaster = () => {
+  // 光线追踪累 用于物体拾取
+  raycaster = new THREE.Raycaster();
+  pointer = new THREE.Vector2();
+
+  function onPointerMove( event: { clientX: number; clientY: number; } ) {
+    // 将鼠标位置归一化为设备坐标。x 和 y 方向的取值范围是 (-1 to +1)
+
+    pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+    pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+  }
+  window.addEventListener( 'pointermove', onPointerMove );
+}
 // 循环渲染
+let theta = 0, radius = 30, o: any;
 const animation = () => {
-  mesh && (mesh.rotation.y += 0.01)
+  theta += 0.1;
+  // 围绕一个球旋转 degToRad将度转化为弧度
+  // degrees * (PI / 180)
+  //  一圈是2PI
+  // （ 2*PI/360 * 角度）
+  // camera.position.x = radius * Math.sin(THREE.MathUtils.degToRad(theta))
+  // camera.position.y = radius * Math.sin(THREE.MathUtils.degToRad(theta))
+  // camera.position.z = radius * Math.cos(THREE.MathUtils.degToRad(theta))
+  // camera.lookAt(0, 0, 0)
+  // camera.updateProjectionMatrix();
+
+  // 通过摄像机和鼠标位置更新射线
+  raycaster.setFromCamera( pointer, camera );
+
+  // 计算物体和射线的焦点(那些东西和该射线相交)
+  const intersects = raycaster.intersectObjects( scene.children ) as any[];
+  if (intersects.length > 0) {
+    if (o !== intersects[0].object) {
+      o && o.material.color.set(o.oldColor);
+      o = intersects[0].object
+      // 不能直接取color对象，因为后面会改变这个对象，所以一直拿到红色，
+      console.log(' o.oldColor',  o.oldColor)
+      o.oldColor = intersects[0].object.material.color.getHex();
+    
+      o.material.color.set( 0xff0000 )
+    } 
+  } else {
+    o && console.log(o.oldColor)
+    o && o.material.color.set(o.oldColor);
+    o = null
+  }
+
   renderer.clear();
   renderer.render(scene, camera);
   requestAnimationFrame(animation)
@@ -106,8 +128,9 @@ const initModel = (): void => {
   initCamera();
   initScene();
   initLight()
-  initHelper()
+  // initHelper()
   initObject();
+  initRaycaster();
   animation();
   window.addEventListener('resize', onWindowResize)
 }

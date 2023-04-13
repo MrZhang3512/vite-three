@@ -7,11 +7,13 @@
 // import example from './list/7.纹理';
 // import example from './list/8.绘制一个三角形';
 // import example from './list/9.绘制一个三角形2';
-import example from './list/10.渲染一个模型'
+// import example from './list/10.渲染一个模型'
 // import example from './list/11.高效的渲染一个几何体'
 // import example from './list/12.渲染多个点'
 // import example from './list/13.渲染一个OBJ模型'
-// import example from './list/14.设置多个纹理'
+// import example from './list/15.拾取物体'
+// import example from './list/17.为模型添加一个包围盒'
+import example from './list/18.使中心点偏移的物体围绕中心点旋转'
 
 const initModel = example;
 export default initModel

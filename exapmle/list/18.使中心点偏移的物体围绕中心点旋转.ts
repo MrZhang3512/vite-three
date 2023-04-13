@@ -1,7 +1,6 @@
 import * as THREE from 'three'
+import { loaderPromise } from '../../utils/common'
 
-import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader"
-import BoxHelper from '../../utils/boxHelper';
 let width: number = 0, height: number = 0;
 let renderer: THREE.WebGLRenderer;
 const initThree = (): void => {
@@ -18,9 +17,9 @@ const initThree = (): void => {
 
 let camera: THREE.PerspectiveCamera;
 const initCamera = () => {
-  camera = new THREE.PerspectiveCamera(60, width / height, 1, 10000);
-  camera.position.x = 0;
-  camera.position.y = 0;
+  camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
+  camera.position.x = 10;
+  camera.position.y = 20;
   camera.position.z = 30;
   camera.up.x = 0;
   camera.up.y = 1;
@@ -32,50 +31,58 @@ let scene: THREE.Scene;
 const initScene = () => {
   scene = new THREE.Scene();
 }
-let light: THREE.DirectionalLight;
+let light: THREE.AmbientLight;
 const initLight = () => {
-  // light = new THREE.AmbientLight(0xffff00); // 白光 0x404040
-  light = new THREE.DirectionalLight(0x404040, 1);
-  light.position.set(50, 50, 50)
+  light = new THREE.AmbientLight(0xffff00); // 白光 0x404040
+  // light = new THREE.DirectionalLight(0x404040, 1);
+  // light.position.set(550, 550, 550)
   scene.add(light);
-  // 模拟相机发出的光
-  // camera.add(light)
 }
 // 创建物体
-let material: THREE.MeshLambertMaterial;
 let mesh: any;
-const initObject = () => {
-  const load = new FBXLoader().load(
-    '../../assets/model/bear.fbx',
-    (text: any) => {
-      mesh = text;
-      console.log(mesh)
-      // // side 单边绘制（前面和后面） 双边绘制
-      material = new THREE.MeshLambertMaterial({ color: '#EEE7E7', side: THREE.BackSide})
-      // // 该文件返回的是一个mesh组 需要更改他的材质
-      for (let i in mesh.children) {
-        // mesh.children[i].material.side = THREE.DoubleSide;
-        mesh.children[i].material = material;
-      }
-      scene.add(mesh)
+let gruop: any;
+const initObject = async () => {
+  mesh = await loaderPromise('OBJLoader', '../../assets/model/中心点位偏移模型.obj')
+  console.log(mesh)
 
-      // 为模型添加个盒子
-      scene.add(new THREE.BoxHelper(mesh))
-    }
-  )
+  // 一个正方体
+  const geometry: THREE.BoxGeometry = new THREE.BoxGeometry( 1, 1, 1 );
+  // 材质
+  const material: THREE.MeshBasicMaterial = new THREE.MeshBasicMaterial( {color: 0x00ff00} );
+  const cube:  THREE.Mesh = new THREE.Mesh( geometry, material );
+  scene.add(cube)
+
+  // 定义一个组
+  gruop = new THREE.Group()
+  gruop.add(mesh)
+  // 用来计算包围盒的3D对象
+  let box3 = new THREE.Box3().setFromObject(mesh)
+  // 计算出中心点
+  box3.getCenter(mesh.position)
+  // 设置positon为反方向(将mesh移动到中心)
+  mesh.position.multiplyScalar(-1)
+
+  // 加一个中心点的坐标系
+  const axesHelper = new THREE.AxesHelper( 60 );
+  box3.getCenter(axesHelper.position)
+  // 将整个组移动到原来的位置
+  box3.getCenter(gruop.position)
+  scene.add( axesHelper );
+  scene.add(gruop)
+
+  console.log(2, mesh, axesHelper)
+
+  
 }
-
 // 初始化辅助线
 const initHelper = () => {
   // 加一个世界坐标系
   const axesHelper = new THREE.AxesHelper( 1000 );
   scene.add( axesHelper );
 }
-
-
 // 循环渲染
 const animation = () => {
-  mesh && (mesh.rotation.y += 0.01)
+  gruop && gruop.rotateY(0.01)
   renderer.clear();
   renderer.render(scene, camera);
   requestAnimationFrame(animation)
