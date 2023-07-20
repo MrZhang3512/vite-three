@@ -21,6 +21,6 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["exapmle", "utils"],
+  "include": ["global.d.ts", "exapmle", "utils"],
   // "references": [{ "path": "./tsconfig.node.json" }]
 }
