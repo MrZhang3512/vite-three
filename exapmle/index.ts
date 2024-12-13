@@ -16,9 +16,9 @@
 // import example from './list/18.使中心点偏移的物体围绕中心点旋转'
 // import example from './list/19.粒子系统'
 // import example from './list/20.灯光案例'
-// import example from './list/21.initThree天空盒，键盘任务移动'
+import example from './list/21.initThree天空盒，键盘任务移动'
 // import example from './list/22.shape'
-import example from './list/23.布料'
+// import example from './list/23.布料'
 
 const initModel = example;
 export default initModel

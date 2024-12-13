@@ -139,6 +139,7 @@ const onKeyDownHandler = (event: KeyboardEvent) => {
 // 循环渲染
 const animation = () => {
   // mesh && (mesh.rotation.y += 0.01)
+  controls.update()
   renderer.clear();
   renderer.render(scene, camera);
   requestAnimationFrame(animation)
@@ -159,5 +160,6 @@ const initModel = (): void => {
   animation();
   window.addEventListener('resize', onWindowResize)
   initKey()
+  // 
 }
 export default initModel
