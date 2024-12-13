@@ -161,5 +161,7 @@ const initModel = (): void => {
   window.addEventListener('resize', onWindowResize)
   initKey()
   // 
+
+  // sd
 }
 export default initModel
